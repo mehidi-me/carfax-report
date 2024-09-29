@@ -1,0 +1,52 @@
+.profile-input input {
+  display: none;
+}
+.profile-input .profile-pic {
+  display: block;
+  margin: auto;
+  width: 8rem;
+  position: relative;
+}
+.user-name input {
+  height: 5rem;
+  width: fit-content;
+  background: none;
+  text-align: center;
+  font-size: 2rem;
+}
+.user-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-name i {
+  font-size: 2.5rem;
+  color: var(--primary);
+}
+.color-picker input {
+  display: none;
+}
+.color-picker label {
+  width: 4rem;
+  aspect-ratio: 1/1;
+  background: var(--i);
+  display: block;
+  border-radius: 50%;
+  border: 0.5rem solid var(--bg2);
+}
+.profile-pic i {
+  font-size: 2.5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1rem;
+}
+.profile-pic::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: linear-gradient(#0e0e0e00, #0e0e0e);
+}

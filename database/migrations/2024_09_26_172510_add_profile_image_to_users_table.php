@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vin_lists', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('vin')->nullable();
-            $table->text('file')->nullable();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('profile_image')->nullable()->after('email'); 
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vin_lists');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

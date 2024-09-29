@@ -1,0 +1,22 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  font-size: 1.2rem;
+  text-align: left !important;
+  padding: 0.5rem;
+}
+.header {
+  border-bottom: var(--border);
+}
+table .user {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+table .user .profile-pic {
+  width: 2.5rem;
+}
