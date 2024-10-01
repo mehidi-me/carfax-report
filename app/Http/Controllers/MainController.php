@@ -68,10 +68,10 @@ class MainController extends Controller
     
              
     
-                    Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
+                  //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
                     VinList::create([
                         "vin" => $request->vin_input,
-                        "file" => 'pdf/' . $request->vin_input . '.pdf',
+                        "file" => NULL,
                         "html" => $modifiedHtml
                     ]);
                     return response()->json(['vin' => $request->vin_input, 'status' => true]);
