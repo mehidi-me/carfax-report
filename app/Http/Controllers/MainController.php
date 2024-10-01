@@ -84,21 +84,27 @@ class MainController extends Controller
     public function getVin($vin)
     {
         // API endpoint
-        $url = "https://dealers.carfax.com/api/vhr/{$vin}";
         $auth = env('CARFAX_AUTH_TOKEN');
+        //$url = "https://dealers.carfax.com/api/vhr/{$vin}";
+        $url = "https://carfax-scrap.onrender.com/get-report/{$vin}/{$auth}";
+        
         // API request with headers
+        // $response = Http::withHeaders([
+        //     'accept' => 'application/json, text/plain, */*',
+        //     'accept-language' => 'en-US,en-GB;q=0.9,en;q=0.8',
+        //     'authorization' => "Bearer {$auth}",
+        //     'priority' => 'u=1, i',
+        //     'sec-ch-ua' => '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
+        //     'sec-ch-ua-mobile' => '?0',
+        //     'sec-ch-ua-platform' => '"Windows"',
+        //     'sec-fetch-dest' => 'empty',
+        //     'sec-fetch-mode' => 'cors',
+        //     'sec-fetch-site' => 'cross-site',
+        //     'Referer' => 'https://www.carfaxonline.com/',
+        //     'Referrer-Policy' => 'strict-origin-when-cross-origin',
+        // ])->get($url);
         $response = Http::withHeaders([
             'accept' => 'application/json, text/plain, */*',
-            'accept-language' => 'en-US,en-GB;q=0.9,en;q=0.8',
-            'authorization' => "Bearer {$auth}",
-            'priority' => 'u=1, i',
-            'sec-ch-ua' => '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-            'sec-ch-ua-mobile' => '?0',
-            'sec-ch-ua-platform' => '"Windows"',
-            'sec-fetch-dest' => 'empty',
-            'sec-fetch-mode' => 'cors',
-            'sec-fetch-site' => 'cross-site',
-            'Referer' => 'https://www.carfaxonline.com/',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
         ])->get($url);
 

@@ -13,16 +13,29 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('VIN List') }}
+                    </x-nav-link>
+                    <x-nav-link :href="url('/transaction-history')" :active="request()->routeIs('transaction.history')">
+                        {{ __('Transaction History') }}
+                    </x-nav-link>
+                    <x-nav-link :href="url('/credit-history')" :active="request()->routeIs('credit.history')">
+                        {{ __('Credit History') }}
                     </x-nav-link>
                     <x-nav-link :href="url('/')">
                         {{ __('Search Report') }}
                     </x-nav-link>
+                    <x-nav-link :href="url('/#Packages')">
+                        {{ __('Packages') }}
+                    </x-nav-link>
                 </div>
             </div>
-
+          
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <div style="    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-weight: bold;">Credit: {{Auth::user()->credit}}</div>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -57,6 +70,10 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
+                <div style="    border: 1px solid #333;
+                border-radius: 5px;
+                padding: 3px 10px;
+                font-weight: bold;">Credit: {{Auth::user()->credit}}</div>
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />

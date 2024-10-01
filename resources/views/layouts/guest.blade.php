@@ -23,7 +23,7 @@
                 <div class="links">
                     <a href="{{ url('/') }}" onclick="menu()">Home</a>
                     <a href="#" onclick="menu()">Reports</a>
-                    <a href="#" onclick="menu()">Packages</a>
+                    <a href="#Packages" onclick="menu()">Packages</a>
                     <a href="#" onclick="menu()">Tutorial</a>
                     <a href="#" onclick="menu()">FAQ</a>
                 </div>
@@ -31,6 +31,10 @@
                     @if (Route::has('login'))
                 
                         @auth
+                        <div style="    border: 1px solid #333;
+                        border-radius: 5px;
+                        padding: 3px 10px;
+                        font-weight: bold;font-size: 14px">Credit: {{Auth::user()->credit}}</div>
                             <a href="{{ url('/dashboard') }}"><button>Dashboard</button></a>
                         @else
                             <a href="{{ route('login') }}" ><button>Log in</button></a>

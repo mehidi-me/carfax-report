@@ -59,7 +59,7 @@
             </div>
         </div>
     </section>
-    <section class="bg">
+    <section class="bg" id="Packages">
         <div class="container">
             <div class="title">
                 <h2>Cheap Carfax Packages</h2>
@@ -68,7 +68,31 @@
                     our report packages. This allows you to buy Carfax reports instantly and effortlessly, without extra
                     steps.</p>
             </div>
-            <div class="grid-4">
+            @php
+    
+    $packages = \App\Models\Packages::all(); // Fetch all packages from the database
+@endphp
+
+<div class="grid-4">
+    @foreach($packages as $package)
+        <div class="card">
+            <div class="price">
+                <h2><sup>$</sup>{{ $package->price }}</h2>
+                <h3>{{ $package->credit }} Reports</h3>
+            </div>
+            <p>${{ number_format($package->price / $package->credit, 2) }}/report</p>
+            <form action="{{route('checkout.package')}}" method="post">
+                @csrf
+                <input type="hidden" name="package_id" value="{{$package->id}}">
+                <button>Buy reports</button>
+            </form>
+        </div>
+    @endforeach
+</div>
+
+
+            {{-- <div class="grid-4">
+
                 <div class="card">
                     <div class="price">
                         <h2><sup>$</sup>65</h2>
@@ -101,7 +125,7 @@
                     <p>$6.5/report</p>
                     <button>Buy reports</button>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </section>
     <section>
