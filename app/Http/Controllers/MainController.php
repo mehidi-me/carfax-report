@@ -7,6 +7,7 @@ use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+
 class MainController extends Controller
 {
 
@@ -65,12 +66,13 @@ class MainController extends Controller
     
     
     
-    
+             
     
                     Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
                     VinList::create([
                         "vin" => $request->vin_input,
-                        "file" => 'pdf/' . $request->vin_input . '.pdf'
+                        "file" => 'pdf/' . $request->vin_input . '.pdf',
+                        "html" => $modifiedHtml
                     ]);
                     return response()->json(['vin' => $request->vin_input, 'status' => true]);
                 } catch (\Throwable $th) {
