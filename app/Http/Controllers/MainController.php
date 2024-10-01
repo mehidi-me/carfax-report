@@ -29,6 +29,8 @@ class MainController extends Controller
                     // Inject a script to hide the elements dynamically on the client-side
                     $script = $dom->createElement('script', '
                         document.addEventListener("DOMContentLoaded", function() {
+                            document.styleSheets[1].href = "/css/vhr.css";
+        document.querySelector("#body-element > script:nth-child(4)").src = "js/vhr.js";
                             const observer = new MutationObserver(function(mutations) {
                                 mutations.forEach(function(mutation) {
                                     mutation.addedNodes.forEach(function(node) {
@@ -123,5 +125,11 @@ class MainController extends Controller
 
         // For now, we simply return the HTML data as a response
         // return response()->json(['vhrHtml' => $vhrHtml]);
+    }
+
+    public function vinPrint(Request $request,$vin)
+    {
+         $data = VinList::where('vin', $vin)->first();
+            return view('download',compact('data'));
     }
 }
