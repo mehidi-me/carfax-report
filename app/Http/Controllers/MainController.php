@@ -6,6 +6,9 @@ use App\Models\VinList;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 
 class MainController extends Controller
@@ -22,44 +25,42 @@ class MainController extends Controller
             if (!empty($html)) {
 
                 try {
-                    $dom = new \DOMDocument();
-                    libxml_use_internal_errors(true); // Suppress warnings due to malformed HTML
-                    $dom->loadHTML($html);
+                    // $dom = new \DOMDocument();
+                    // libxml_use_internal_errors(true); // Suppress warnings due to malformed HTML
+                    // $dom->loadHTML($html);
                     
-                    // Inject a script to hide the elements dynamically on the client-side
-                    $script = $dom->createElement('script', '
-                        document.addEventListener("DOMContentLoaded", function() {
-                            document.styleSheets[1].href = "/css/vhr.css";
-        document.querySelector("#body-element > script:nth-child(4)").src = "js/vhr.js";
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    mutation.addedNodes.forEach(function(node) {
-                                        if (node.nodeType === 1) {
-                                            if (node.classList.contains("print-only-report-provided-by-snackbar") || 
-                                                node.classList.contains("report-provided-by-snackbar") || 
-                                                node.classList.contains("report-provided-by")) {
-                                                node.style.display = "none";
-                                            }
-                                        }
-                                    });
-                                });
-                            });
+                    // // Inject a script to hide the elements dynamically on the client-side
+                    // $script = $dom->createElement('script', '
+                    //     document.addEventListener("DOMContentLoaded", function() {
+                    //         const observer = new MutationObserver(function(mutations) {
+                    //             mutations.forEach(function(mutation) {
+                    //                 mutation.addedNodes.forEach(function(node) {
+                    //                     if (node.nodeType === 1) {
+                    //                         if (node.classList.contains("print-only-report-provided-by-snackbar") || 
+                    //                             node.classList.contains("report-provided-by-snackbar") || 
+                    //                             node.classList.contains("report-provided-by")) {
+                    //                             node.style.display = "none";
+                    //                         }
+                    //                     }
+                    //                 });
+                    //             });
+                    //         });
                     
-                            observer.observe(document.body, { childList: true, subtree: true });
+                    //         observer.observe(document.body, { childList: true, subtree: true });
                     
-                            // Hide initially existing elements
-                            document.querySelectorAll(".print-only-report-provided-by-snackbar, .report-provided-by-snackbar, .report-provided-by").forEach(function(el) {
-                                el.style.display = "none";
-                            });
-                        });
-                    ');
+                    //         // Hide initially existing elements
+                    //         document.querySelectorAll(".print-only-report-provided-by-snackbar, .report-provided-by-snackbar, .report-provided-by").forEach(function(el) {
+                    //             el.style.display = "none";
+                    //         });
+                    //     });
+                    // ');
                     
-                    // Append the script to the <body> or <head>
-                    $body = $dom->getElementsByTagName('body')->item(0);
-                    $body->appendChild($script);
+                    // // Append the script to the <body> or <head>
+                    // $body = $dom->getElementsByTagName('body')->item(0);
+                    // $body->appendChild($script);
                     
-                    // Save the modified HTML
-                    $modifiedHtml = $dom->saveHTML();
+                    // // Save the modified HTML
+                    // $modifiedHtml = $dom->saveHTML();
                     
                     // Return the modified HTML
                    // return $modifiedHtml;
@@ -69,12 +70,23 @@ class MainController extends Controller
     
     
              
-    
+     $auth = env('CARFAX_AUTH_TOKEN');
                   //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
+                  $url = "https://carfax-scrap.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
+
+    // Get the contents of the PDF from the URL
+    $pdfContent = file_get_contents($url);
+
+    // Define the path where you want to save the PDF in the public folder
+    $fileName = "{$request->vin_input}.pdf";  // You can customize the name
+    $path = public_path("pdf/{$fileName}");
+
+    // Save the file to the public folder
+    File::put($path, $pdfContent);
                     VinList::create([
                         "vin" => $request->vin_input,
-                        "file" => NULL,
-                        "html" => $modifiedHtml
+                        "file" => 'pdf/' . $request->vin_input . '.pdf',
+                       
                     ]);
                     return response()->json(['vin' => $request->vin_input, 'status' => true]);
                 } catch (\Throwable $th) {
@@ -125,11 +137,5 @@ class MainController extends Controller
 
         // For now, we simply return the HTML data as a response
         // return response()->json(['vhrHtml' => $vhrHtml]);
-    }
-
-    public function vinPrint(Request $request,$vin)
-    {
-         $data = VinList::where('vin', $vin)->first();
-            return view('download',compact('data'));
     }
 }

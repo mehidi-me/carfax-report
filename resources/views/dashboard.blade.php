@@ -39,7 +39,7 @@
                         <tr>
                             <td>{{$id++}}</td>
                             <td>{{$user_vin->vin->vin}}</td>
-                            <td><a href="/download/{{$user_vin->vin->vin}}" target="_blank" class="inline-flex items-center px-4 py-2 my-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"><button>Download</button></a></td>
+                            <td><a href="{{asset($user_vin->vin->file)}}" download="" class="inline-flex items-center px-4 py-2 my-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"><button>Download</button></a></td>
                             <td>{{$user_vin->updated_at}}</td>
                         </tr>
                     @endforeach
