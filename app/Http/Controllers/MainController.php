@@ -72,7 +72,7 @@ class MainController extends Controller
              
                     $auth = env('CARFAX_AUTH_TOKEN');
                   //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
-                  $url = "http://localhost:7800/download-pdf/{$request->vin_input}/{$auth}";
+                  $url = "https://carfax-scrap.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
                   $response = Http::withHeaders([
                     'accept' => 'application/json, text/plain, */*',
                     'Referrer-Policy' => 'strict-origin-when-cross-origin',
