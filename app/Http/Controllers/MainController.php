@@ -24,70 +24,88 @@ class MainController extends Controller
             //$html = $this->getVin($request->vin_input);
             // if (!empty($html)) {
 
-                try {
-                    // $dom = new \DOMDocument();
-                    // libxml_use_internal_errors(true); // Suppress warnings due to malformed HTML
-                    // $dom->loadHTML($html);
-                    
-                    // // Inject a script to hide the elements dynamically on the client-side
-                    // $script = $dom->createElement('script', '
-                    //     document.addEventListener("DOMContentLoaded", function() {
-                    //         const observer = new MutationObserver(function(mutations) {
-                    //             mutations.forEach(function(mutation) {
-                    //                 mutation.addedNodes.forEach(function(node) {
-                    //                     if (node.nodeType === 1) {
-                    //                         if (node.classList.contains("print-only-report-provided-by-snackbar") || 
-                    //                             node.classList.contains("report-provided-by-snackbar") || 
-                    //                             node.classList.contains("report-provided-by")) {
-                    //                             node.style.display = "none";
-                    //                         }
-                    //                     }
-                    //                 });
-                    //             });
-                    //         });
-                    
-                    //         observer.observe(document.body, { childList: true, subtree: true });
-                    
-                    //         // Hide initially existing elements
-                    //         document.querySelectorAll(".print-only-report-provided-by-snackbar, .report-provided-by-snackbar, .report-provided-by").forEach(function(el) {
-                    //             el.style.display = "none";
-                    //         });
-                    //     });
-                    // ');
-                    
-                    // // Append the script to the <body> or <head>
-                    // $body = $dom->getElementsByTagName('body')->item(0);
-                    // $body->appendChild($script);
-                    
-                    // // Save the modified HTML
-                    // $modifiedHtml = $dom->saveHTML();
-                    
-                    // Return the modified HTML
-                   // return $modifiedHtml;
-                    
-                    
-    
-    
-    
-             
-                    $auth = env('CARFAX_AUTH_TOKEN');
-                  //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
-                  $url = "https://puppeteer-render-0pgc.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
-                  $response = Http::withHeaders([
+            try {
+                // $dom = new \DOMDocument();
+                // libxml_use_internal_errors(true); // Suppress warnings due to malformed HTML
+                // $dom->loadHTML($html);
+
+                // // Inject a script to hide the elements dynamically on the client-side
+                // $script = $dom->createElement('script', '
+                //     document.addEventListener("DOMContentLoaded", function() {
+                //         const observer = new MutationObserver(function(mutations) {
+                //             mutations.forEach(function(mutation) {
+                //                 mutation.addedNodes.forEach(function(node) {
+                //                     if (node.nodeType === 1) {
+                //                         if (node.classList.contains("print-only-report-provided-by-snackbar") || 
+                //                             node.classList.contains("report-provided-by-snackbar") || 
+                //                             node.classList.contains("report-provided-by")) {
+                //                             node.style.display = "none";
+                //                         }
+                //                     }
+                //                 });
+                //             });
+                //         });
+
+                //         observer.observe(document.body, { childList: true, subtree: true });
+
+                //         // Hide initially existing elements
+                //         document.querySelectorAll(".print-only-report-provided-by-snackbar, .report-provided-by-snackbar, .report-provided-by").forEach(function(el) {
+                //             el.style.display = "none";
+                //         });
+                //     });
+                // ');
+
+                // // Append the script to the <body> or <head>
+                // $body = $dom->getElementsByTagName('body')->item(0);
+                // $body->appendChild($script);
+
+                // // Save the modified HTML
+                // $modifiedHtml = $dom->saveHTML();
+
+                // Return the modified HTML
+                // return $modifiedHtml;
+
+
+
+
+
+
+                $auth = env('CARFAX_AUTH_TOKEN');
+                //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
+                $url = "https://puppeteer-render-0pgc.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
+                $response = Http::withHeaders([
                     'accept' => 'application/json, text/plain, */*',
                     'Referrer-Policy' => 'strict-origin-when-cross-origin',
                 ])->get($url);
-        
+
                 // Check if the response is valid
                 if ($response->failed() || !$response->json('file_path')) {
-                    return '';
+                    return response()->json(['status' => false]);
                 }
-        
+
                 $file_path = $response->json('file_path');
-              
+
 
                 // Get the contents of the PDF from the URL
-                $pdfContent = file_get_contents($file_path);
+                //$pdfContent = file_get_contents($file_path);
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $file_path);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 120); // Set timeout in seconds
+
+                $pdfContent = curl_exec($ch);
+
+                if (curl_errno($ch)) {
+                    $error_msg = curl_error($ch);  // Get error message if any
+                    // Handle the error here
+                    return response()->json(['status' => false, 'message' => $error_msg]);
+                }
+
+                curl_close($ch);
+
+                // Save the PDF content as before
+
 
                 // Define the path where you want to save the PDF in the public folder
                 $fileName = "{$request->vin_input}.pdf";  // You can customize the name
@@ -95,16 +113,16 @@ class MainController extends Controller
 
                 // Save the file to the public folder
                 File::put($path, $pdfContent);
-                    VinList::create([
-                        "vin" => $request->vin_input,
-                        "file" => 'pdf/' . $request->vin_input . '.pdf',
-                       
-                    ]);
-                    return response()->json(['vin' => $request->vin_input, 'status' => true]);
-                } catch (\Throwable $th) {
-                    return response()->json(['status' => false,'message' => $th->getMessage()]);
-                }
+                VinList::create([
+                    "vin" => $request->vin_input,
+                    "file" => 'pdf/' . $request->vin_input . '.pdf',
+
+                ]);
+                return response()->json(['vin' => $request->vin_input, 'status' => true]);
+            } catch (\Throwable $th) {
+                return response()->json(['status' => false, 'message' => $th->getMessage()]);
             }
+        }
         // }
 
         return response()->json(['status' => false]);
@@ -116,7 +134,7 @@ class MainController extends Controller
         $auth = env('CARFAX_AUTH_TOKEN');
         //$url = "https://dealers.carfax.com/api/vhr/{$vin}";
         $url = "http://localhost:7800/download-pdf/{$vin}/{$auth}";
-        
+
         // API request with headers
         // $response = Http::withHeaders([
         //     'accept' => 'application/json, text/plain, */*',
