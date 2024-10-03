@@ -21,8 +21,8 @@ class MainController extends Controller
         if ($data) {
             return response()->json(['vin' => $request->vin_input, 'status' => true]);
         } else {
-            $html = $this->getVin($request->vin_input);
-            if (!empty($html)) {
+            //$html = $this->getVin($request->vin_input);
+            // if (!empty($html)) {
 
                 try {
                     // $dom = new \DOMDocument();
@@ -70,19 +70,31 @@ class MainController extends Controller
     
     
              
-     $auth = env('CARFAX_AUTH_TOKEN');
+                    $auth = env('CARFAX_AUTH_TOKEN');
                   //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
-                  $url = "https://carfax-scrap.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
+                  $url = "http://localhost:7800/download-pdf/{$request->vin_input}/{$auth}";
+                  $response = Http::withHeaders([
+                    'accept' => 'application/json, text/plain, */*',
+                    'Referrer-Policy' => 'strict-origin-when-cross-origin',
+                ])->get($url);
+        
+                // Check if the response is valid
+                if ($response->failed() || !$response->json('file_path')) {
+                    return '';
+                }
+        
+                $file_path = $response->json('file_path');
+              
 
-    // Get the contents of the PDF from the URL
-    $pdfContent = file_get_contents($url);
+                // Get the contents of the PDF from the URL
+                $pdfContent = file_get_contents($file_path);
 
-    // Define the path where you want to save the PDF in the public folder
-    $fileName = "{$request->vin_input}.pdf";  // You can customize the name
-    $path = public_path("pdf/{$fileName}");
+                // Define the path where you want to save the PDF in the public folder
+                $fileName = "{$request->vin_input}.pdf";  // You can customize the name
+                $path = public_path("pdf/{$fileName}");
 
-    // Save the file to the public folder
-    File::put($path, $pdfContent);
+                // Save the file to the public folder
+                File::put($path, $pdfContent);
                     VinList::create([
                         "vin" => $request->vin_input,
                         "file" => 'pdf/' . $request->vin_input . '.pdf',
@@ -93,7 +105,7 @@ class MainController extends Controller
                     return response()->json(['status' => false,'message' => $th->getMessage()]);
                 }
             }
-        }
+        // }
 
         return response()->json(['status' => false]);
     }
@@ -103,7 +115,7 @@ class MainController extends Controller
         // API endpoint
         $auth = env('CARFAX_AUTH_TOKEN');
         //$url = "https://dealers.carfax.com/api/vhr/{$vin}";
-        $url = "https://carfax-scrap.onrender.com/get-report/{$vin}/{$auth}";
+        $url = "http://localhost:7800/download-pdf/{$vin}/{$auth}";
         
         // API request with headers
         // $response = Http::withHeaders([
