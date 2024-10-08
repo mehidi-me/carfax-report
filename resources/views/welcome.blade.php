@@ -1,4 +1,14 @@
 <x-guest-layout>
+    <div class="modal modal_loading">
+        <div class="modal-main">
+            <div class="progress-container">
+                <div class="progress-circle" id="progressCircle">
+                    <span id="progressValue">0%</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
     <div class="modal modal_not_found">
         <div class="modal-main">
             <div class="typo">
@@ -73,7 +83,7 @@
     $packages = \App\Models\Packages::all(); // Fetch all packages from the database
 @endphp
 
-<div class="grid-4">
+<div class="grid-3">
     @foreach($packages as $package)
         <div class="card">
             <div class="price">
@@ -337,6 +347,17 @@
     function searchReport() {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const searchReportBtn = document.getElementById("searchReportBtn");
+        const progressCircle = document.getElementById('progressCircle');
+    const progressValue = document.getElementById('progressValue');
+    const progressContainer = document.querySelector('.progress-container');
+    let percentage = 0;
+
+    function updateProgressBar(percentage) {
+        const progress = percentage + '%';
+        progressCircle.style.background = `conic-gradient(#4caf50 ${progress}, #ddd ${progress})`;
+        progressValue.textContent = progress;
+    }
+
         var isAuthenticated = {{ Auth::check() ? 'true' : 'false' }};
         if (isAuthenticated) {
             let vinValue = document.getElementById('vin_input').value;
@@ -344,6 +365,18 @@
             // 
             searchReportBtn.innerHTML = "Loading...";
             searchReportBtn.disabled = true;
+            document.querySelector('.modal_loading').style.display = 'flex';
+
+             // Start progress animation
+        let interval = setInterval(() => {
+            if (percentage < 100) {
+                percentage += 1;
+                updateProgressBar(percentage);
+            } else {
+                clearInterval(interval); // Stop the progress animation when it reaches 100%
+            }
+        }, 200);
+
             fetch('{{ route('search.vin') }}', {
                     method: 'POST', // POST method
                     headers: {
@@ -358,6 +391,8 @@
                     if (!response.ok) {
                         searchReportBtn.innerHTML = "Search my report";
                         searchReportBtn.disabled = false;
+                        document.querySelector('.modal_loading').style.display = 'none';
+                        clearInterval(interval);
                         throw new Error('Network response was not ok');
                     }
                     return response.json(); // Parse the response as JSON
@@ -375,11 +410,16 @@
 
                     searchReportBtn.innerHTML = "Search my report";
                     searchReportBtn.disabled = false;
+                    document.querySelector('.modal_loading').style.display = 'none';
+                    clearInterval(interval);
                 })
                 .catch(error => {
                     searchReportBtn.innerHTML = "Search my report";
                     searchReportBtn.disabled = false;
+                    document.querySelector('.modal_loading').style.display = 'none';
+                    clearInterval(interval);
                     console.error('There was a problem with the fetch operation:', error);
+                    alert("Something Wrong Try Again!")
                 });
         } else {
             window.location.href = "{{ route('login') }}";
