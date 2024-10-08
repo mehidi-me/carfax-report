@@ -22,10 +22,10 @@
                 </div>
                 <div class="links">
                     <a href="{{ url('/') }}" onclick="menu()">Home</a>
-                    <a href="#" onclick="menu()">Reports</a>
+                    <a href="#Reports" onclick="menu()">Reports</a>
                     <a href="#Packages" onclick="menu()">Packages</a>
-                    <a href="#" onclick="menu()">Tutorial</a>
-                    <a href="#" onclick="menu()">FAQ</a>
+                    <a href="#Tutorial" onclick="menu()">Tutorial</a>
+                    <a href="#faq_section" onclick="menu()">FAQ</a>
                 </div>
                 <div class="cta">
                     @if (Route::has('login'))

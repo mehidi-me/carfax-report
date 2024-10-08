@@ -53,7 +53,7 @@
                     <p>The free CARFAX Value Range tool offers an accurate estimate of your used car’s worth by
                         comparing it to similar models
                         sold. It factors in mileage, market trends, and location to help you negotiate a fair deal.</p>
-                    <button>Get Value</button>
+                   <a href="#"> <button>Get Value</button></a>
                 </div>
                 <img class="fix" src="images/2.png" alt="">
             </div>
@@ -129,7 +129,7 @@
         </div>
     </section>
     <section>
-        <div class="container">
+        <div class="container" id="Reports">
             <div class="title">
                 <h2>Get the vehicle history report Canadians trust</h2>
                 <p>Our report can provide you with critical details about a vehicle's history and help you make a more
@@ -189,7 +189,7 @@
         </div>
     </section>
     <section>
-        <div class="container">
+        <div class="container" id="Tutorial">
             <div class="title">
                 <h2>Tutorial (Video)</h2>
             </div>
@@ -199,7 +199,7 @@
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </section>
-    <section class="bg">
+    <section class="bg" id="faq_section">
         <div class="container">
             <div class="title">
                 <h2>F.A.Q</h2>
