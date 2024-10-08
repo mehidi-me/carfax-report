@@ -41,6 +41,7 @@
             <div class="form-wrap">
                 <form method="POST" action="{{ route('password.store') }}">
                     @csrf
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
                     <div class="typo">
                         <h3>Reset password</h3>
                     </div>

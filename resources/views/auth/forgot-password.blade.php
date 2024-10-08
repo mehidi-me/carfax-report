@@ -25,6 +25,7 @@
     <main>
         <div class="container">
             <div class="form-wrap">
+                <x-auth-session-status class="mb-4" :status="session('status')" />
                 <form method="POST" action="{{ route('password.email') }}">
                     @csrf
                     <div class="typo">
