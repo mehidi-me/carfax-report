@@ -1,18 +1,27 @@
 <x-guest-layout>
     <div class="modal modal_loading">
         <div class="modal-main">
-            <div class="progress-container">
-                <div class="progress-circle" id="progressCircle">
-                    <span id="progressValue">0%</span>
+            <div style="display: none">
+                <div class="progress-container">
+                    <div class="progress-circle" id="progressCircle">
+                        <span id="progressValue">0%</span>
+                    </div>
                 </div>
             </div>
-            
+            <p style="    text-align: center;
+    font-size: 24px;
+    font-weight: bold;">We are generating report</p>
+            <div style="    display: flex;
+    align-items: center;
+    justify-content: center;">
+                <img src="{{asset('/images/Loading.gif')}}" alt="">
+            </div>
         </div>
     </div>
     <div class="modal modal_not_found">
         <div class="modal-main">
             <div class="typo">
-                <h3>Report not found!</h3>
+                <h3 id="errorText">Report not found!</h3>
             </div>
             <p>VIN: <span id="vinValueShow2">1FBAX2CM6FKA44189</span></p>
             <div class="cta">
@@ -27,12 +36,12 @@
                 <p>There is info we received
                     from Carfax database.</p>
             </div>
-            <p>Records: <span>53</span></p>
-            <p>Auto: <span>FORD TRANSIT 35O XLT 2015</span></p>
+            {{-- <p>Records: <span>53</span></p> --}}
+            {{-- <p>Auto: <span id="vinName">FORD TRANSIT 35O XLT 2015</span></p> --}}
             <p>VIN: <span id="vinValueShow">1FBAX2CM6FKA44189</span></p>
 
             <div class="cta">
-                <form action="{{ url('/checkout') }}" method="post">
+                <form action="{{ Auth::check() ? url('/checkout') : url('/checkout-without-login') }}" method="post">
                     @csrf
                     <input type="hidden" value="1FBAX2CM6FKA44189" name="vin" id="payVin">
                     <button type="submit">Get my report</button>
@@ -217,79 +226,122 @@
             <div class="faq-wrap">
                 <div class="faq">
                     <div class="question">
-                        <p>Can I order one report per classic car?</p>
+                        <p>How long can I find these reports on my account?</p>
                         <div class="ico"><span></span> <span></span></div>
                     </div>
                     <div class="ans">
                         <p>
-                            Unfortunately not on our site. All cars made before 1981 are not included in our database
-                            and are not recorded in
-                            regular records.
+                            1 year from the date that you purchased
                         </p>
                     </div>
                 </div>
                 <div class="faq">
                     <div class="question">
-                        <p>Can I order one report per classic car?</p>
+                        <p>Where is the VIN number located?</p>
                         <div class="ico"><span></span> <span></span></div>
                     </div>
                     <div class="ans">
                         <p>
-                            Unfortunately not on our site. All cars made before 1981 are not included in our database
-                            and are not recorded in
-                            regular records.
+                            Basically, the VIN is located on the plate, which is located under the windshield. Another number is printed in the registration documents.
                         </p>
                     </div>
                 </div>
                 <div class="faq">
                     <div class="question">
-                        <p>Can I order one report per classic car?</p>
+                        <p>What is a VIN?</p>
                         <div class="ico"><span></span> <span></span></div>
                     </div>
                     <div class="ans">
                         <p>
-                            Unfortunately not on our site. All cars made before 1981 are not included in our database
-                            and are not recorded in
-                            regular records.
+                            VIN is a 17 digit code. This is the vehicle identification number. Each letter and digit of the code has its own meaning, which is decoded by our system. With the help of such a code, we determine the year of manufacture, brand, and other nuances of a particular model. The VIN is an important identifier for the information contained in CARFAX reports. The vehicle identification number is an individual code for a specific vehicle. VIN is single, no two VIN numbers are the same. The VIN-code reflects the individual features of the car, its characteristics.
                         </p>
                     </div>
                 </div>
                 <div class="faq">
                     <div class="question">
-                        <p>Can I order one report per classic car?</p>
+                        <p>Do I have to be the owner of a vehicle to order a CARFAX RECORD?</p>
                         <div class="ico"><span></span> <span></span></div>
                     </div>
                     <div class="ans">
                         <p>
-                            Unfortunately not on our site. All cars made before 1981 are not included in our database
-                            and are not recorded in
-                            regular records.
+                            Not necessary. Anyone can order a CARFAX report. In order for you to easily order a report, you need to provide an email address and a credit card. You will also need a VIN to generate a report.
                         </p>
                     </div>
                 </div>
                 <div class="faq">
                     <div class="question">
-                        <p>Can I order one report per classic car?</p>
+                        <p>What if I can't place an order from the site?</p>
                         <div class="ico"><span></span> <span></span></div>
                     </div>
                     <div class="ans">
                         <p>
-                            Unfortunately not on our site. All cars made before 1981 are not included in our database
-                            and are not recorded in
-                            regular records.
+                            If you are unable to order a Carfax history report on the page then you should try to refresh the page or go to it again. If you can’t place an order in any way, then you should contact customer support at the support email address.
                         </p>
                     </div>
                 </div>
                 <div class="faq">
                     <div class="question">
-                        <p>Can I order one report per classic car?</p>
+                        <p>I am a business owner and want to buy more credits, how can I do this?</p>
                         <div class="ico"><span></span> <span></span></div>
                     </div>
                     <div class="ans">
                         <p>
-                            Unfortunately not on our site. All cars made before 1981 are not included in our database
-                            and are not recorded in
-                            regular records.
+                            You can see the package tiers to buy multiple credits at once above. If you have any issues please contact support@carfaxgenie.con
+                        </p>
+                    </div>
+                </div>
+                <div class="faq">
+                    <div class="question">
+                        <p>The VIN I have entered is not found, why?</p>
+                        <div class="ico"><span></span> <span></span></div>
+                    </div>
+                    <div class="ans">
+                        <p>
+                            We recommend entering it in twice just to make sure as sometime is can glitch in searching. If it still isn’t found then confirm you entered it correct or with the vehicle owner. Worst case scenario please reach out to support@carfaxgenie.com
+                        </p>
+                    </div>
+                </div>
+                <div class="faq">
+                    <div class="question">
+                        <p>What should I do if I'm having trouble accessing my account?</p>
+                        <div class="ico"><span></span> <span></span></div>
+                    </div>
+                    <div class="ans">
+                        <p>
+                            Enter forgot password.
+                        </p>
+                    </div>
+                </div>
+                <div class="faq">
+                    <div class="question">
+                        <p>How do I pay for a CARFAX Report?</p>
+                        <div class="ico"><span></span> <span></span></div>
+                    </div>
+                    <div class="ans">
+                        <p>
+                            You will be sent to a stripe portal 
+                        </p>
+                    </div>
+                </div>
+                <div class="faq">
+                    <div class="question">
+                        <p>Can I cancel my order?</p>
+                        <div class="ico"><span></span> <span></span></div>
+                    </div>
+                    <div class="ans">
+                        <p>
+                            Once you’ve enter your stripe details then your report has been generated and been paid for. If you received the report you are not able to cancel anymore
+                        </p>
+                    </div>
+                </div>
+                <div class="faq">
+                    <div class="question">
+                        <p>Can I get a refund for a CARFAX Report?</p>
+                        <div class="ico"><span></span> <span></span></div>
+                    </div>
+                    <div class="ans">
+                        <p>
+                            If you paid and the report wasn’t generated please reach out to support. We can get you the report or refund you, whichever you prefer.
                         </p>
                     </div>
                 </div>
@@ -347,6 +399,7 @@
     function searchReport() {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const searchReportBtn = document.getElementById("searchReportBtn");
+        const errorText = document.getElementById("errorText");
         const progressCircle = document.getElementById('progressCircle');
     const progressValue = document.getElementById('progressValue');
     const progressContainer = document.querySelector('.progress-container');
@@ -358,7 +411,8 @@
         progressValue.textContent = progress;
     }
 
-        var isAuthenticated = {{ Auth::check() ? 'true' : 'false' }};
+       // var isAuthenticated = {{ Auth::check() ? 'true' : 'false' }};
+       var isAuthenticated = true;
         if (isAuthenticated) {
             let vinValue = document.getElementById('vin_input').value;
             if (!vinValue) return alert("Vin is requered!");
@@ -402,10 +456,12 @@
                     if (data.status) {
                         document.querySelector('.modal_found').style.display = 'flex';
                         document.getElementById('payVin').value = vinValue.toUpperCase();
+                        document.getElementById('vinName').innerHTML = data.name;
                         document.getElementById('vinValueShow').innerHTML = vinValue.toUpperCase();
                         document.getElementById('vinValueShow2').innerHTML = vinValue.toUpperCase();
                     } else {
                         document.querySelector('.modal_not_found').style.display = 'flex';
+                        errorText.innerHTML = data.message
                     }
 
                     searchReportBtn.innerHTML = "Search my report";
@@ -419,7 +475,9 @@
                     document.querySelector('.modal_loading').style.display = 'none';
                     clearInterval(interval);
                     console.error('There was a problem with the fetch operation:', error);
-                    alert("Something Wrong Try Again!")
+                    document.querySelector('.modal_not_found').style.display = 'flex';
+                    errorText.innerHTML = "Something Wrong Try Again!"
+                 
                 });
         } else {
             window.location.href = "{{ route('login') }}";

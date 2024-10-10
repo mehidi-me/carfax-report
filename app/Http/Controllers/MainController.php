@@ -80,7 +80,7 @@ class MainController extends Controller
         
                 // Check if the response is valid
                 if ($response->failed() || !$response->json('file_path')) {
-                    return response()->json(['status' => false]);
+                    return response()->json(['status' => false, 'message' => $response->json('message')]);
                 }
         
                 $file_path = $response->json('file_path');
@@ -102,13 +102,14 @@ class MainController extends Controller
                 // Save the file to the public folder
                 File::put($path, $pdfContent);
                     VinList::create([
+                        "name" => $response->json('name'),
                         "vin" => $request->vin_input,
                         "file" => 'pdf/' . $request->vin_input . '.pdf',
                        
                     ]);
-                    return response()->json(['vin' => $request->vin_input, 'status' => true]);
+                    return response()->json(['vin' => $request->vin_input, 'status' => true, 'name' => $response->json('name')]);
                 } catch (\Throwable $th) {
-                    return response()->json(['status' => false,'message' => $th->getMessage()]);
+                    return response()->json(['status' => false,'messagee' => $th->getMessage()]);
                 }
             }
         // }

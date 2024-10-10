@@ -42,13 +42,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/checkout', 'App\Http\Controllers\StripeController@checkout')->name('checkout');
+   
 Route::post('/checkout-package', 'App\Http\Controllers\StripeController@checkoutPackage')->name('checkout.package');
 
-Route::post('/search-vin', 'App\Http\Controllers\MainController@searchVin')->name('search.vin');
+
 
 Route::get('/success', 'App\Http\Controllers\StripeController@success')->name('success');
 });
-
-
+Route::post('/search-vin', 'App\Http\Controllers\MainController@searchVin')->name('search.vin');
+Route::post('/checkout-without-login', 'App\Http\Controllers\StripeController@checkout2')->name('checkout2');
+Route::get('/success2', 'App\Http\Controllers\StripeController@success2')->name('success2');
 
 require __DIR__.'/auth.php';

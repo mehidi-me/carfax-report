@@ -65,6 +65,36 @@ class StripeController extends Controller
         }
         
     }
+    public function checkout2(Request $request){
+        
+        Stripe::setApiKey(config('stripe.sk'));
+
+        $session = Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => '1 Car Fax Search',
+                        ],
+                        'unit_amount'  => 700,
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('success2') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'  => url('/'),
+            'metadata'    => [
+            'vin' => $request->vin,  // Set the user ID in metadata
+            'type' => 'vin'
+            ],
+        ]);
+
+        return redirect()->away($session->url);
+        
+        
+    }
     public function checkoutPackage(Request $request){
         $package = Packages::find($request->package_id);
         Stripe::setApiKey(config('stripe.sk'));
@@ -145,6 +175,24 @@ class StripeController extends Controller
             // $data = VinList::where('vin', $vin)->first();
             // return view('download',compact('data'));
         }
+      
+    }
+    public function success2(Request $request){
+        Stripe::setApiKey(config('stripe.sk'));
+
+        $session_id = $request->query('session_id');
+        
+        $session = Session::retrieve($session_id);
+           
+        
+            $data = VinList::where('vin', $session->metadata->vin)->first();
+           
+            //   return redirect()->to('/dashboard')
+            //   ->with('success', 'Transaction successful!');
+            // $vin = $session->metadata->vin;
+            // $data = VinList::where('vin', $vin)->first();
+             return view('download',compact('data'));
+        
       
     }
 }

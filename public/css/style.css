@@ -460,6 +460,15 @@ input {
   border: var(--border);
 }
 
+.fild i {
+  font-size: 2.5rem;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--sub-text);
+}
+
 .fild label {
   color: var(--sub-text);
   font-size: 1.6rem;

@@ -62,11 +62,11 @@
                             <input type="text" id="first-name" placeholder=" " name="name" required autofocus autocomplete="name"><label for="first-name">First
                                 name<span>*</span></label>
                         </div>
-                   
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     <div class="fild">
                         <input type="email" id="email" placeholder=" " name="email" required autofocus autocomplete="username"><label for="email">Email<span>*</span></label>
                     </div>
-
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     <div class="fild">
                         <input type="password"
                         name="password"
