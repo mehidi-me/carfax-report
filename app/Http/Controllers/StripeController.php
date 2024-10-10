@@ -47,7 +47,7 @@ class StripeController extends Controller
                         'product_data' => [
                             'name' => '1 Car Fax Search',
                         ],
-                        'unit_amount'  => 700,
+                        'unit_amount'  => 750,
                     ],
                     'quantity'   => 1,
                 ],
@@ -78,7 +78,7 @@ class StripeController extends Controller
                         'product_data' => [
                             'name' => '1 Car Fax Search',
                         ],
-                        'unit_amount'  => 700,
+                        'unit_amount'  => 750,
                     ],
                     'quantity'   => 1,
                 ],
