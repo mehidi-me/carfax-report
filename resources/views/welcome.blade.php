@@ -187,7 +187,7 @@
                     </div>
                 </div>
             </div>
-            <button class="mt-3 center">View sample report</button>
+            {{-- <button class="mt-3 center">View sample report</button> --}}
         </div>
     </section>
     <section class="bg">
