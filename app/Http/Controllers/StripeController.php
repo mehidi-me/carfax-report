@@ -59,6 +59,7 @@ class StripeController extends Controller
             'vin' => $request->vin,  // Set the user ID in metadata
             'type' => 'vin'
             ],
+            'allow_promotion_codes' => true
         ]);
 
         return redirect()->away($session->url);
@@ -89,6 +90,7 @@ class StripeController extends Controller
             'vin' => $request->vin,  // Set the user ID in metadata
             'type' => 'vin'
             ],
+            'allow_promotion_codes' => true
         ]);
 
         return redirect()->away($session->url);
@@ -119,6 +121,7 @@ class StripeController extends Controller
                 'package_id' => $package->id,
                 'type' => "package",
             ],
+            'allow_promotion_codes' => true
         ]);
 
         return redirect()->away($session->url);
