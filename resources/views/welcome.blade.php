@@ -459,7 +459,7 @@
                        
                         document.getElementById('vinValueShow').innerHTML = vinValue.toUpperCase();
                         document.getElementById('vinValueShow2').innerHTML = vinValue.toUpperCase();
-                        document.getElementById('vinName').innerHTML = data?.name;
+                        // document.getElementById('vinName').innerHTML = data?.name;
                     } else {
                         document.querySelector('.modal_not_found').style.display = 'flex';
                         errorText.innerHTML = data.message
