@@ -212,10 +212,11 @@
             <div class="title">
                 <h2>Tutorial (Video)</h2>
             </div>
-            <iframe src="https://www.youtube.com/embed/yOgt4eU1TcI"
+            {{-- <iframe src="https://www.youtube.com/embed/yOgt4eU1TcI"
                 title="The Nissan Skyline GT-R 34, Supra&#39;s ultimate RIVAL! (4K)" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
+                <iframe src="https://www.loom.com/embed/edf31bdc4c7f4509934030f1885d6af8?sid=598534ff-a9e0-4e4d-84b3-adcd53d766c6" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
     </section>
     <section class="bg" id="faq_section">
