@@ -611,7 +611,12 @@ header .links button.empty {
     width: 3.5rem;
     cursor: pointer;
   }
-
+.cta button {
+  margin: 0 !important;
+  border-radius: 5rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+}
   .menu span:nth-child(1),
   .menu span:nth-child(1)::before,
   .menu span:nth-child(1)::after {

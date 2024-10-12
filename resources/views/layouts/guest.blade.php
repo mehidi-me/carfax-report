@@ -18,7 +18,7 @@
         <header>
             <div class="container">
                 <div class="logo">
-                   <a href="{{ url('/') }}"> <img src="images/logo.png" alt=""></a>
+                   <a href="{{ url('/') }}"> <img src="images/logo.svg" alt=""></a>
                 </div>
                 <div class="links">
                     <a href="{{ url('/') }}" onclick="menu()">Home</a>
