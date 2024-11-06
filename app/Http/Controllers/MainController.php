@@ -72,7 +72,8 @@ class MainController extends Controller
              
                     $auth = env('CARFAX_AUTH_TOKEN');
                   //  Pdf::html($modifiedHtml)->save('pdf/' . $request->vin_input . '.pdf');
-                  $url = "https://puppeteer-render-t54w.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
+                 // $url = "https://puppeteer-render-t54w.onrender.com/download-pdf/{$request->vin_input}/{$auth}";
+                  $url = "http://ec2-3-21-39-140.us-east-2.compute.amazonaws.com:4000/vhr/{$request->vin_input}";
                   $response = Http::withHeaders([
                     'accept' => 'application/json, text/plain, */*',
                     'Referrer-Policy' => 'strict-origin-when-cross-origin',
