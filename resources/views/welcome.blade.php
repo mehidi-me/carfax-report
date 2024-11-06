@@ -37,7 +37,7 @@
                     from Carfax database.</p>
             </div>
             {{-- <p>Records: <span>53</span></p> --}}
-            {{-- <p>Auto: <span id="vinName">FORD TRANSIT 35O XLT 2015</span></p> --}}
+            <p>Auto: <span id="vinName">FORD TRANSIT 35O XLT 2015</span></p>
             <p>VIN: <span id="vinValueShow">1FBAX2CM6FKA44189</span></p>
 
             <div class="cta">
@@ -460,7 +460,7 @@
                        
                         document.getElementById('vinValueShow').innerHTML = vinValue.toUpperCase();
                         document.getElementById('vinValueShow2').innerHTML = vinValue.toUpperCase();
-                        // document.getElementById('vinName').innerHTML = data?.name;
+                         document.getElementById('vinName').innerHTML = data?.name;
                     } else {
                         document.querySelector('.modal_not_found').style.display = 'flex';
                         errorText.innerHTML = data.message
