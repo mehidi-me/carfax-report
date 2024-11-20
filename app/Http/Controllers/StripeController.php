@@ -17,6 +17,8 @@ class StripeController extends Controller
     public function index(){
         return view('welcome');
     }
+
+    
     public function checkout(Request $request){
         $user = Auth::user();
         if($user->credit > 0){
